@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fuel Up Daily: Year 7 HPE games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E4EBE3; --surface:#F4F7F2; --ink:#1D2622; --muted:#55625B; --line:#C5D0C6;
+  --cinnabar:#B3352B; --bronze:#9A7A3A; --jade:#2F7560; --blue:#3B5A7A;
+  --slip:#DCCB94; --slip-line:#C7B276; --slip-ink:#2B2416; --absent:#7C8781;
+  --on-accent:#FFFFFF; --hero:#EEF2EC; --mtn3:#C3CFC5; --mtn2:#91A598; --mtn1:#4D6258;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#111916; --surface:#1A2420; --ink:#E5ECE5; --muted:#9BA89F; --line:#2E3B35;
+    --cinnabar:#E0574A; --bronze:#C9A45C; --jade:#4FA886; --blue:#7FA3C9;
+    --slip:#3A3424; --slip-line:#4A422E; --slip-ink:#EADFC0; --absent:#46514B; --hero:#16201B; --mtn3:#22302A; --mtn2:#2C3E35; --mtn1:#3B5247;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111916; --surface:#1A2420; --ink:#E5ECE5; --muted:#9BA89F; --line:#2E3B35;
+  --cinnabar:#E0574A; --bronze:#C9A45C; --jade:#4FA886; --blue:#7FA3C9;
+  --slip:#3A3424; --slip-line:#4A422E; --slip-ink:#EADFC0; --absent:#46514B; --hero:#16201B; --mtn3:#22302A; --mtn2:#2C3E35; --mtn1:#3B5247;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html[data-big]{font-size:125%}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:1rem;line-height:1.5;-webkit-tap-highlight-color:transparent}
+h1,h2,h3,.display{font-family:"Bricolage Grotesque","Songti SC","Noto Serif",Georgia,serif;font-weight:800;line-height:1.15;margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.wrap{max-width:960px;margin:0 auto;padding:1.25rem 1rem 3rem}
+.muted{color:var(--muted)}
+
+/* Header */
+.top{display:flex;gap:1rem;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem}
+.title h1{font-size:clamp(2.1rem,7vw,3.4rem);letter-spacing:-.01em}
+.title p{margin:.35rem 0 0;color:var(--muted);max-width:34rem}
+.seal{flex:none;width:76px;height:76px;background:var(--cinnabar);color:#fff;border-radius:6px;display:grid;place-items:center;text-align:center;transform:rotate(-4deg);box-shadow:inset 0 0 0 3px rgba(255,255,255,.35)}
+.seal b{display:block;font-family:"Bricolage Grotesque",Georgia,serif;font-size:1.9rem;line-height:1}
+.seal span{font-size:.72rem;line-height:1.1}
+.controls{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;margin:0 0 1.5rem}
+.seg{display:inline-flex;border:2px solid var(--ink);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:.45rem 1rem;font-weight:700}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.chip{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:.4rem .9rem;font-weight:700}
+.chip[aria-pressed="true"]{border-color:var(--jade);color:var(--jade)}
+.stat{font-weight:700}
+
+/* Menu: ink-wash hero + artefact cards */
+.hero{position:relative;overflow:hidden;border-radius:10px;background:var(--hero);padding:1.4rem 1.2rem 0;margin-bottom:1rem}
+.hero .ink{display:block;width:calc(100% + 2.4rem);margin:.6rem -1.2rem 0;height:auto;aspect-ratio:4/1;min-height:120px;max-height:230px}
+.hero .head{position:relative;display:flex;justify-content:space-between;gap:1rem;align-items:flex-start}
+.hero h1{font-size:clamp(2.3rem,8vw,3.8rem);letter-spacing:-.01em}
+.hero p{margin:.4rem 0 0;max-width:30rem;color:var(--muted)}
+.mt3{fill:var(--mtn3)}.mt2{fill:var(--mtn2)}.mt1{fill:var(--mtn1)}.sun{fill:var(--cinnabar)}
+.birds{fill:none;stroke:var(--mtn1);stroke-width:2;stroke-linecap:round}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
+@media(min-width:700px){.cards{grid-template-columns:repeat(4,minmax(0,1fr));gap:.9rem}}
+.card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:1.4rem .95rem 1rem;text-align:left;display:flex;flex-direction:column;gap:.45rem;min-height:190px;transition:border-color .15s ease,transform .15s ease}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:9px;background:var(--cinnabar);border-radius:8px 8px 0 0;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='9'%3E%3Cpath d='M1 8V1h12v5H6V4h4' fill='none' stroke='black' stroke-width='1.6'/%3E%3C/svg%3E") repeat-x;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='9'%3E%3Cpath d='M1 8V1h12v5H6V4h4' fill='none' stroke='black' stroke-width='1.6'/%3E%3C/svg%3E") repeat-x}
+.card:hover{border-color:var(--jade);transform:translateY(-2px)}
+.emblem{width:48px;height:48px;border-radius:50%;border:2px solid var(--jade);color:var(--jade);display:grid;place-items:center;margin-bottom:.25rem}
+.emblem svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.card h3{font-size:1.22rem;line-height:1.2;color:var(--ink)}
+.card .desc{font-size:.9rem;line-height:1.35;color:var(--muted)}
+.card .go{margin-top:auto;font-weight:700;color:var(--jade);font-size:.9rem}
+.card .done{position:absolute;top:1.1rem;right:.7rem;background:var(--cinnabar);color:#fff;font-weight:700;font-size:.8rem;padding:.2rem .45rem;border-radius:3px;transform:rotate(-6deg)}
+.footnote{margin-top:1.5rem;font-size:.9rem;color:var(--muted);max-width:44rem}
+
+/* Game shell */
+.gtop{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-bottom:1rem}
+.back{border:0;background:transparent;font-weight:700;padding:.4rem 0;color:var(--muted)}
+.gtitle{font-size:clamp(1.6rem,5vw,2.2rem)}
+.progress{font-weight:700;color:var(--muted)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:1rem}
+.prompt{font-family:"Bricolage Grotesque",Georgia,serif;font-weight:600;font-size:clamp(1.25rem,4vw,1.6rem);line-height:1.3;margin:0 0 1rem}
+.tag{display:inline-block;font-size:.78rem;font-weight:700;padding:.1rem .5rem;border-radius:3px;margin-bottom:.6rem;color:var(--on-accent)}
+.tag.main,.tag.china{background:var(--cinnabar)}.tag.a,.tag.other{background:var(--bronze)}.tag.b,.tag.local{background:var(--jade)}.tag.mix,.tag.compare{background:var(--blue)}
+.row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.input{flex:1 1 12rem;min-width:0;padding:.75rem .9rem;border:2px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit;font-size:1.1rem}
+.btn{border:2px solid var(--ink);background:var(--ink);color:var(--bg);padding:.7rem 1.1rem;border-radius:8px;font-weight:700}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:default}
+.feedback{margin-top:.9rem;padding:.8rem .9rem;border-left:5px solid var(--jade);background:var(--bg);border-radius:0 8px 8px 0}
+.feedback.bad{border-color:var(--cinnabar)}
+.feedback.mid{border-color:var(--bronze)}
+.big-score{font-family:"Bricolage Grotesque",Georgia,serif;font-size:2.4rem;font-weight:800}
+.list{margin:.5rem 0 0;padding:0;list-style:none;display:grid;gap:.3rem}
+.list li{display:flex;justify-content:space-between;gap:1rem;padding:.35rem .5rem;border-radius:6px;background:var(--surface)}
+.list li.you{outline:2px solid var(--jade)}
+
+/* Wordle */
+.wgrid{display:grid;gap:6px;justify-content:center;margin:.5rem 0 1rem}
+.wrow{display:grid;gap:6px}
+.tile{width:min(11vw,52px);height:min(11vw,52px);display:grid;place-items:center;border:2px solid var(--line);font-weight:700;font-size:1.4rem;border-radius:4px;background:var(--surface)}
+.tile.filled{border-color:var(--muted)}
+.tile.correct{background:var(--jade);border-color:var(--jade);color:#fff}
+.tile.present{background:var(--bronze);border-color:var(--bronze);color:#fff}
+.tile.absent{background:var(--absent);border-color:var(--absent);color:#fff}
+.kb{display:grid;gap:6px;max-width:520px;margin:0 auto}
+.kbr{display:flex;gap:5px;justify-content:center}
+.key{flex:1;min-width:0;height:52px;border:0;border-radius:6px;background:var(--line);font-weight:700;font-size:.95rem;padding:0}
+.key.wide{flex:1.6;font-size:.8rem}
+.key.correct{background:var(--jade);color:#fff}.key.present{background:var(--bronze);color:#fff}.key.absent{background:var(--absent);color:#fff}
+.clue{text-align:center;margin:0 auto .5rem;max-width:32rem}
+
+/* Connections */
+.cgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.ctile{min-height:64px;border:0;border-radius:8px;background:var(--slip);color:var(--slip-ink);font-weight:700;font-size:clamp(.72rem,2.6vw,.95rem);padding:.3rem;line-height:1.15;word-break:break-word}
+.ctile[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.solved{border-radius:8px;padding:.6rem;text-align:center;color:#fff;margin-bottom:6px}
+.solved b{display:block}
+.lv0{background:var(--jade)}.lv1{background:var(--bronze)}.lv2{background:var(--blue)}.lv3{background:var(--cinnabar)}
+.dots{display:inline-flex;gap:4px;vertical-align:middle}.dots i{width:10px;height:10px;border-radius:50%;background:var(--muted);display:inline-block}.dots i.used{background:var(--line)}
+
+/* Timeline */
+.tl{list-style:none;margin:0;padding:0;display:grid;gap:.5rem}
+.tl li{display:flex;align-items:center;gap:.6rem;background:var(--surface);border:2px solid var(--line);border-radius:8px;padding:.55rem .6rem}
+.tl li.ok{border-color:var(--jade)}.tl li.no{border-color:var(--cinnabar)}
+.tl .txt{flex:1}
+.tl .yr{font-weight:700;color:var(--muted);font-size:.9rem;white-space:nowrap}
+.arrows{display:flex;flex-direction:column;gap:3px}
+.arrows button{border:1px solid var(--line);background:var(--bg);border-radius:5px;width:38px;height:28px;padding:0;font-weight:700}
+
+/* Choice buttons */
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}
+.choice{border:2px solid var(--line);background:var(--surface);border-radius:8px;padding:.9rem .6rem;font-weight:700;min-height:64px}
+.choice.right{border-color:var(--jade);background:var(--jade);color:#fff}
+.choice.wrong{border-color:var(--cinnabar);background:var(--cinnabar);color:#fff}
+.cluelist{margin:0 0 1rem;padding-left:1.4rem;display:grid;gap:.35rem}
+.share{white-space:pre-wrap;background:var(--bg);border:1px dashed var(--line);border-radius:8px;padding:.7rem;font-size:.95rem}
+
+/* New games */
+.ptl{list-style:none;margin:0;padding:0;display:grid;gap:.35rem}
+.ptl li{display:flex;align-items:center;gap:.6rem;border-radius:8px}
+.ptl .ref{background:var(--bg);border:1px solid var(--line);padding:.55rem .7rem}
+.ptl .txt{flex:1}.ptl .yr{font-weight:700;color:var(--muted);font-size:.9rem;white-space:nowrap}
+.ptl .gap button{width:100%;border:2px dashed var(--jade);background:transparent;color:var(--jade);border-radius:8px;padding:.45rem;font-weight:700}
+.ptl .gap.miss{border:2px dashed var(--cinnabar);color:var(--cinnabar);padding:.4rem .7rem;font-weight:700}
+.ptl .placed{padding:.6rem .7rem;color:#fff}.ptl .placed.ok{background:var(--jade)}.ptl .placed.no{background:var(--bronze)}
+.ptl .placed .yr{color:#fff}
+.route{list-style:none;margin:0 0 .6rem;padding:0;display:flex;justify-content:space-between;position:relative}
+.route::before{content:"";position:absolute;left:6px;right:6px;top:7px;height:3px;background:var(--line)}
+.route li{position:relative;display:flex;flex-direction:column;align-items:center;gap:.25rem;flex:1;font-size:.68rem;font-weight:700;text-align:center;color:var(--muted);min-width:0}
+.route .dot{width:16px;height:16px;border-radius:50%;background:var(--surface);border:3px solid var(--line)}
+.route .been .dot{background:var(--bronze);border-color:var(--bronze)}.route .been{color:var(--ink)}
+.route .next .dot{border-color:var(--cinnabar)}
+.trail{font-size:.85rem;font-weight:700;color:var(--bronze);margin:0 0 .4rem}
+.choices.one{grid-template-columns:1fr}
+.meters{display:grid;gap:.4rem}
+.meter{display:grid;grid-template-columns:8.5rem 1fr 2rem;gap:.6rem;align-items:center;font-size:.92rem}
+.meter .bar{height:12px;border-radius:6px;background:var(--line);overflow:hidden}.meter .bar i{display:block;height:100%;transition:width .4s ease}
+.meter b{text-align:right}
+.sortcard{background:var(--slip);color:var(--slip-ink);border-radius:8px;padding:1.2rem 1rem;text-align:center;font-family:"Bricolage Grotesque",Georgia,serif;font-weight:600;font-size:1.25rem;line-height:1.3}
+.bins{display:grid;gap:.5rem}
+.bin{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.5rem;display:flex;flex-direction:column;gap:.4rem;min-width:0}
+.bin .btn{padding:.6rem .3rem;font-size:.9rem;word-break:break-word}
+.bin ul{list-style:none;margin:0;padding:0;display:grid;gap:.3rem;font-size:.82rem;line-height:1.3}
+.bin li{overflow-wrap:anywhere;padding:.3rem .4rem;border-radius:5px;border-left:4px solid var(--jade);background:var(--bg)}
+.bin li.no{border-color:var(--cinnabar)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* theme */
+:root{--bg:#F2F5EA;--surface:#FFFFFF;--ink:#1F2A1C;--muted:#5A6654;--line:#D6DFCB;--cinnabar:#D2462A;--bronze:#C9741A;--jade:#3E8A3A;--blue:#6A4C9C;--slip:#F6D98A;--slip-line:#E9C567;--slip-ink:#3A2C08;--absent:#8A9483;--hero:#E3EED6;--mtn3:#BFD8A6;--mtn2:#8DBB6E;--mtn1:#4E8A3E}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121A10;--surface:#1B2518;--ink:#E8F0E2;--muted:#A3B19A;--line:#2E3B2A;--cinnabar:#F06A4D;--bronze:#F0A040;--jade:#6DBA5F;--blue:#A58AD6;--slip:#4A3E1A;--slip-line:#5A4C22;--slip-ink:#F6E7B8;--absent:#4A5545;--hero:#172215;--mtn3:#24361F;--mtn2:#2F4A28;--mtn1:#3F6535}}
+:root[data-theme="dark"]{--bg:#121A10;--surface:#1B2518;--ink:#E8F0E2;--muted:#A3B19A;--line:#2E3B2A;--cinnabar:#F06A4D;--bronze:#F0A040;--jade:#6DBA5F;--blue:#A58AD6;--slip:#4A3E1A;--slip-line:#5A4C22;--slip-ink:#F6E7B8;--absent:#4A5545;--hero:#172215;--mtn3:#24361F;--mtn2:#2F4A28;--mtn1:#3F6535}
+.card::before{-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='9'%3E%3Ccircle cx='6' cy='4.5' r='2.6'/%3E%3C/svg%3E") repeat-x;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='9'%3E%3Ccircle cx='6' cy='4.5' r='2.6'/%3E%3C/svg%3E") repeat-x}
+
+</style>
+</head>
+<body>
+<main class="wrap" id="app" aria-live="polite"></main>
+<script>
+/* ============ CONTENT: Year 7 HPE ============
+   Weights: Nutrition 65%, physical activity & movement 15%,
+   health, safety & wellbeing 15%, connecting ideas 5%. */
+const CONFIG={
+ key:"fuel-up-y7-v1",title:"Fuel Up Daily",
+ tagline:"Twelve quick games for Year 7 Health and PE, with a big helping of nutrition.",
+ mix:"Question mix: 65% nutrition, 15% physical activity and movement, 15% health, safety and wellbeing, 5% connecting ideas. Amounts like sugar per drink are typical averages; brands vary.",
+ games:{obscure:{name:"Rare Answers"},dynastle:{name:"Foodle"},groups:{name:"Groups of Four"},timeline:{name:"Rank It",desc:"Put six items in order"},place:{name:"Where Does It Fit?",desc:"Slot an item into a ranked list"},
+   silk:{name:"Digestion Journey",desc:"Guide a bite of food through your body"},mandate:{name:"Fuel Your Day",desc:"Make choices to keep energy and mood up"},sort:{name:"Sort It Out"}},
+ icons:{mandate:'<path d="M16 27s-10-6-10-13a5.5 5.5 0 0 1 10-3a5.5 5.5 0 0 1 10 3c0 7-10 13-10 13z"/>',timeline:'<path d="M5 26h4V18H5zM14 26h4V12h-4zM23 26h4V6h-4z"/>'},
+ journey:{cat:"main",ask:"Where does your bite of food go next?",here:"You're in the",step:"Stage"},
+ sim:{cat:"main",unit:"Moment",meters:["Energy","Nutrients","Mood"],intro:"Make choices across a school day. Keep your energy, nutrients and mood up. If any drops to zero, you run out of fuel.",fail:"You've run out of fuel. Time to rest, refuel and try again tomorrow.",lost:"Ran out of fuel"}
+};
+const CATW={main:.65,a:.15,b:.15,mix:.05};
+const CATNAME={main:"Nutrition",a:"Physical activity & movement",b:"Health, safety & wellbeing",mix:"Connecting ideas"};
+
+const WORDS=[
+["PROTEIN","Nutrient that builds and repairs muscles and body tissue.","main"],
+["FIBRE","Found in wholegrains, fruit and veg. Keeps your digestion moving.","main"],
+["CALCIUM","Mineral in dairy foods that builds strong bones and teeth.","main"],
+["IRON","Mineral that helps your blood carry oxygen.","main"],
+["VITAMIN","Nutrient like A, C or D, needed in small amounts.","main"],
+["GRAINS","Food group with bread, rice, pasta and oats.","main"],
+["DAIRY","Food group with milk, yoghurt and cheese.","main"],
+["LEGUMES","Beans, lentils and chickpeas.","main"],
+["SERVE","A standard amount of food used in the Guide to Healthy Eating.","main"],
+["LABEL","Check the nutrition information panel on this.","main"],
+["SODIUM","Part of salt. Too much can raise blood pressure.","main"],
+["SUGAR","About 4 g of it fits in one teaspoon.","main"],
+["WATER","The best drink choice, straight from the tap.","main"],
+["ENERGY","What carbohydrates mainly give your body.","main"],
+["HYDRATE","Drink enough fluid to do this.","main"],
+["SNACK","A small amount of food between meals.","main"],
+["NUTRIENT","Substance in food your body needs to grow and work.","main"],
+["ALLERGY","When the immune system reacts to a food like peanuts.","main"],
+["OMEGA","___-3 fats are found in oily fish like salmon.","main"],
+["ZINC","Mineral that helps wounds heal and supports immunity.","main"],
+["CARBS","Short name for the body's main fuel.","main"],
+["FRUIT","Food group: aim for 2 serves a day.","main"],
+["LENTILS","Small legumes used in dhal and soups.","main"],
+["YOGHURT","Dairy food made with helpful bacteria.","main"],
+["OATS","Wholegrain cooked into porridge.","main"],
+["MINERAL","Calcium, iron and zinc are all one of these.","main"],
+["DIGEST","Break food down so your body can absorb it.","main"],
+["STOMACH","Organ that churns food with strong acid.","main"],
+["ENZYME","Protein that speeds up breaking down food.","main"],
+["SALIVA","Liquid in your mouth that starts digesting starch.","main"],
+["STAMINA","Being able to keep going for a long time.","a"],
+["AGILITY","Changing direction quickly and with control.","a"],
+["STRETCH","Do static ones after exercise, dynamic ones before.","a"],
+["WARMUP","Light activity that prepares the body for exercise.","a"],
+["AEROBIC","Exercise that uses oxygen, like jogging or swimming.","a"],
+["MUSCLE","Tissue that contracts to move your body.","a"],
+["PULSE","Heartbeat you can feel at your wrist or neck.","a"],
+["SPRINT","Running as fast as you can over a short distance.","a"],
+["SLEEP","5–13-year-olds need 9 to 11 hours of this.","b"],
+["PUBERTY","Stage when a child's body becomes an adult's.","b"],
+["HYGIENE","Habits like washing hands that keep you healthy.","b"],
+["SHADE","Slip, slop, slap, seek ___ and slide on sunnies.","b"],
+["EMOTION","A feeling like joy, worry or anger.","b"],
+["RESPECT","Treating others' feelings and choices as important.","b"],
+["HABITS","Small routines, like drinking water daily, become these.","mix"],
+["WELLNESS","Being healthy in body and mind.","mix"]
+].map(([w,clue,cat])=>({w,clue,cat}));
+
+const OBSCURE=[
+{cat:"main",q:"Name a food from the grain (cereal) food group.",a:[["Bread",10],["Rice",10],["Pasta",15],["Breakfast cereal",20,"cereal"],["Oats",25,"porridge"],["Noodles",30],["Wraps",40,"tortillas","tortilla"],["Crackers",50,"rice cakes"],["Couscous",60],["Quinoa",70],["Barley",75],["Polenta",80],["Rye",80,"rye bread"],["Millet",90],["Buckwheat",90]]},
+{cat:"main",q:"Name a vegetable or legume.",a:[["Carrot",10],["Broccoli",10],["Potato",15],["Lettuce",20],["Corn",20],["Peas",25],["Tomato",25],["Pumpkin",30],["Spinach",35],["Cucumber",35],["Capsicum",40],["Zucchini",45],["Cauliflower",45],["Celery",50],["Mushroom",50],["Sweet potato",50],["Beetroot",55],["Kale",60],["Chickpeas",65],["Lentils",65],["Eggplant",65],["Asparagus",70],["Brussels sprouts",70],["Leek",80],["Bok choy",80],["Artichoke",85],["Parsnip",85],["Okra",90],["Kohlrabi",95]]},
+{cat:"main",q:"Name a food that's a good source of protein.",a:[["Chicken",10],["Beef",15,"meat","steak","mince"],["Eggs",15],["Fish",20],["Nuts",30],["Tuna",30],["Beans",35],["Lamb",40],["Salmon",40],["Tofu",45],["Turkey",45],["Peanut butter",50],["Lentils",55],["Chickpeas",60],["Prawns",60],["Seeds",70],["Edamame",80],["Tempeh",85],["Kangaroo",85]]},
+{cat:"main",q:"Name a food that's a good source of calcium.",a:[["Milk",5],["Cheese",15],["Yoghurt",15],["Ice cream",45],["Soy milk",50,"fortified soy milk"],["Tofu",60],["Broccoli",60],["Almonds",65],["Kale",70],["Sardines",85],["Canned salmon",85,"salmon"],["Bok choy",85],["Tahini",85,"sesame seeds"],["Figs",90]]},
+{cat:"main",q:"Name a fruit.",a:[["Apple",5],["Banana",5],["Orange",10],["Strawberry",20],["Grapes",20],["Watermelon",25],["Mango",25],["Pineapple",30],["Blueberry",30],["Pear",30],["Kiwi fruit",40,"kiwi"],["Peach",40],["Cherry",45],["Raspberry",45],["Mandarin",45],["Plum",50],["Apricot",55],["Nectarine",60],["Papaya",65],["Passionfruit",65],["Lychee",70],["Pomegranate",70],["Fig",75],["Dragon fruit",80],["Persimmon",85],["Guava",85],["Quandong",95],["Finger lime",95],["Davidson plum",95]]},
+{cat:"main",q:"Name a 'sometimes' (discretionary) food or drink.",a:[["Chips",10,"crisps"],["Lollies",10,"candy","sweets"],["Chocolate",10],["Soft drink",10,"soda","coke"],["Cake",20],["Ice cream",20],["Biscuits",25,"cookies"],["Pizza",25],["Hot chips",30,"fries"],["Doughnuts",35,"donuts"],["Pies",45,"meat pie"],["Energy drinks",45,"energy drink"],["Sausage rolls",50],["Muffins",60],["Cordial",70],["Sports drinks",70],["Bacon",75],["Croissants",75],["Salami",80]]},
+{cat:"main",q:"Name a nutrient your body needs.",a:[["Protein",10],["Carbohydrates",10,"carbs","carbohydrate"],["Vitamins",15],["Fat",20,"fats"],["Water",30],["Calcium",30],["Fibre",30,"fiber"],["Iron",35],["Vitamin C",35],["Vitamin D",45],["Vitamin A",60],["Sodium",60],["Zinc",70],["Potassium",70],["Magnesium",75],["Omega-3",80,"omega 3"],["Vitamin B12",80,"b12"],["Iodine",85],["Folate",85]]},
+{cat:"main",q:"Name a healthy breakfast food.",a:[["Cereal",10],["Toast",10],["Eggs",15],["Porridge",20,"oats"],["Fruit",20],["Yoghurt",25],["Banana",30],["Smoothie",35],["Muesli",40],["Wholegrain toast",45],["Baked beans",55],["Avocado",55],["Omelette",60],["Rice",70],["Nuts",70],["Leftovers",85],["Congee",90]]},
+{cat:"main",q:"Name a food rich in fibre.",a:[["Wholemeal bread",15,"wholegrain bread","brown bread"],["Oats",25],["Apples",30],["Beans",30],["Broccoli",35],["Carrots",40],["Bananas",40],["Brown rice",40],["Lentils",45],["Chickpeas",50],["Pears",55],["Berries",55],["Nuts",60],["Popcorn",65],["Prunes",70],["Bran",70],["Avocado",70],["Quinoa",70],["Chia seeds",80,"chia"],["Linseed",85,"flaxseed"],["Artichoke",90]]},
+{cat:"a",q:"Name a sport or activity that's great for fitness.",a:[["Running",10],["Soccer",10,"football"],["Swimming",15],["Basketball",15],["Cycling",20,"bike riding"],["Netball",20],["AFL",20,"footy"],["Rugby",25],["Tennis",25],["Dancing",30],["Cricket",35],["Hockey",40],["Skipping",45],["Volleyball",45],["Surfing",50],["Martial arts",50,"karate","taekwondo"],["Gymnastics",50],["Touch football",55],["Rowing",60],["Badminton",60],["Skateboarding",60],["Rock climbing",65,"climbing"],["Water polo",75],["Ultimate frisbee",80],["Parkour",85],["Lacrosse",85],["Orienteering",90]]},
+{cat:"a",q:"Name a component of fitness.",a:[["Strength",10],["Speed",15],["Endurance",15,"cardiorespiratory endurance","stamina"],["Flexibility",20],["Agility",35],["Balance",35],["Power",45],["Coordination",45],["Muscular endurance",50],["Reaction time",60],["Body composition",70]]},
+{cat:"b",q:"Name something that helps you get a good night's sleep.",a:[["No screens before bed",15,"no phone","no screens"],["Regular bedtime",25,"routine"],["Dark room",30],["Comfortable bed",30],["Reading",35],["Quiet",35],["Exercise",40],["Cool room",50],["Avoid caffeine",50],["Slow breathing",55,"meditation","relaxing"],["Warm shower",55,"bath"],["Journaling",75],["Avoid big meals late",80],["Morning sunlight",85]]},
+{cat:"b",q:"Name a way to keep food safe to eat.",a:[["Wash your hands",10,"wash hands"],["Refrigerate",15,"fridge"],["Cook thoroughly",25,"cook properly"],["Check use-by dates",30,"use by date"],["Wash fruit and veg",35],["Clean surfaces",40],["Cover food",40],["Separate raw meat",50],["Reheat until steaming",60,"reheat"],["Separate chopping boards",70],["Thaw in the fridge",75],["Use a food thermometer",90,"thermometer"]]},
+{cat:"mix",q:"Name something that gives your body energy.",a:[["Food",10],["Sleep",20],["Sugar",20],["Carbohydrates",25,"carbs"],["Breakfast",25],["Pasta",35],["Bananas",40],["Fats",45],["Oats",45],["Protein",50],["Glucose",60]]}
+];
+
+const FERMI=[
+{cat:"main",q:"How many grams of sugar fit in one teaspoon?",type:"qty",a:4,unit:"g",spread:.6,fact:"About 4 g. Dividing grams of sugar by 4 tells you the teaspoons."},
+{cat:"main",q:"About how many teaspoons of sugar are in a 375 mL can of regular cola?",type:"qty",a:10,unit:"teaspoons",fact:"About 10 teaspoons (around 40 g)."},
+{cat:"main",q:"How many serves of fruit a day are recommended for 12–13-year-olds?",type:"qty",a:2,unit:"serves",spread:.6,fact:"2 serves. One serve is a medium apple or banana, or two small fruits like plums."},
+{cat:"main",q:"How many serves of vegetables a day are recommended for 12–13-year-olds?",type:"qty",a:5,unit:"serves",spread:.5,fact:"5 serves for girls and 5½ for boys. One serve is ½ cup of cooked veg or 1 cup of salad."},
+{cat:"main",q:"How many serves of milk, yoghurt, cheese or alternatives a day for 12–13-year-olds?",type:"qty",a:3.5,unit:"serves",spread:.5,fact:"3½ serves. One serve is a cup of milk, two slices of cheese or a small tub of yoghurt."},
+{cat:"main",q:"What percentage of Australian children eat enough vegetables each day?",type:"qty",a:6,unit:"%",fact:"Only about 6% (ABS, 2017–18). Most kids eat far fewer than recommended."},
+{cat:"main",q:"Roughly what percentage of your body is water?",type:"qty",a:60,unit:"%",spread:.5,fact:"About 60% for adults, and a bit more for children."},
+{cat:"main",q:"How many food groups are in the Australian Guide to Healthy Eating?",type:"qty",a:5,unit:"groups",spread:.5,fact:"Five: vegetables and legumes, fruit, grains, lean meats and alternatives, and milk, yoghurt, cheese and alternatives."},
+{cat:"main",q:"One serve of vegetables equals how many cups of raw salad leaves?",type:"qty",a:1,unit:"cup",spread:.5,fact:"1 cup of salad leaves, or ½ cup of cooked vegetables."},
+{cat:"main",q:"About how many metres long is your whole digestive tract?",type:"qty",a:9,unit:"m",spread:.8,fact:"About 9 metres from mouth to the end of the large intestine."},
+{cat:"main",q:"How long is the small intestine, in metres?",type:"qty",a:6,unit:"m",spread:.7,fact:"About 6 metres. It's folded up tightly inside your abdomen."},
+{cat:"main",q:"How many hours does food usually take to pass all the way through you?",type:"qty",a:48,unit:"hours",fact:"Usually somewhere between 24 and 72 hours."},
+{cat:"main",q:"About how many litres of saliva do you make each day?",type:"qty",a:1,unit:"L",fact:"Somewhere between half a litre and 1.5 litres a day."},
+{cat:"main",q:"How many teeth does an adult usually have?",type:"qty",a:32,unit:"teeth",spread:.5,fact:"32, including four wisdom teeth. Children have 20 baby teeth."},
+{cat:"main",q:"About how many grams of protein are in one large egg?",type:"qty",a:6,unit:"g",spread:.7,fact:"About 6 grams."},
+{cat:"a",q:"How many minutes of moderate to vigorous activity should young people get each day?",type:"qty",a:60,unit:"minutes",spread:.6,fact:"At least 60 minutes a day, according to Australia's physical activity guidelines."},
+{cat:"a",q:"On how many days a week should young people do muscle- and bone-strengthening activities?",type:"qty",a:3,unit:"days",spread:.5,fact:"At least 3 days a week."},
+{cat:"a",q:"What's a typical resting heart rate for a teenager, in beats per minute?",type:"qty",a:75,unit:"bpm",spread:.5,fact:"Usually between about 60 and 100 bpm. Fitter people often have lower resting heart rates."},
+{cat:"a",q:"About how many muscles are in the human body?",type:"qty",a:600,unit:"muscles",fact:"Over 600."},
+{cat:"a",q:"How many bones are in the adult human body?",type:"qty",a:206,unit:"bones",spread:.6,fact:"206. Babies are born with closer to 300, and some fuse as they grow."},
+{cat:"b",q:"How many hours of sleep a night do 5–13-year-olds need?",type:"qty",a:10,unit:"hours",spread:.4,fact:"9 to 11 hours a night."},
+{cat:"b",q:"What's the most recreational screen time per day recommended for young people, in hours?",type:"qty",a:2,unit:"hours",spread:.6,fact:"No more than 2 hours a day, not counting schoolwork."},
+{cat:"b",q:"For how many seconds should you scrub your hands with soap?",type:"qty",a:20,unit:"seconds",spread:.6,fact:"At least 20 seconds, then rinse and dry well."},
+{cat:"b",q:"Leftovers should go in the fridge within how many hours of cooking?",type:"qty",a:2,unit:"hours",spread:.6,fact:"Within 2 hours. Bacteria grow quickly at room temperature."},
+{cat:"mix",q:"About how many cups of fluid a day do 9–13-year-olds need?",type:"qty",a:6,unit:"cups",spread:.5,fact:"About 5–6 cups for girls and 6–7 for boys, more when it's hot or you're active. Water is best."}
+];
+
+const CONNECT=[
+{cat:"main",groups:[
+ {name:"Grain foods",items:["Bread","Rice","Pasta","Oats"]},
+ {name:"Milk, yoghurt, cheese & alternatives",items:["Milk","Cheese","Yoghurt","Fortified soy milk"]},
+ {name:"Lean meats & alternatives",items:["Chicken","Eggs","Tofu","Fish"]},
+ {name:"Fruit",items:["Apple","Mango","Berries","Kiwi fruit"]}]},
+{cat:"main",groups:[
+ {name:"Minerals",items:["Calcium","Iron","Zinc","Iodine"]},
+ {name:"Vitamins",items:["Vitamin A","Vitamin C","Vitamin D","Folate"]},
+ {name:"Good sources of fibre",items:["Wholegrains","Legumes","Bran","Pears"]},
+ {name:"Healthy fats",items:["Avocado","Olive oil","Nuts","Salmon"]}]},
+{cat:"main",groups:[
+ {name:"Parts of the digestive system",items:["Mouth","Oesophagus","Stomach","Small intestine"]},
+ {name:"Sometimes foods",items:["Lollies","Soft drink","Chips","Cake"]},
+ {name:"On a food label",items:["Serving size","Per 100 g","Ingredients","Use-by date"]},
+ {name:"Everyday drinks",items:["Tap water","Plain milk","Sparkling water","Unsweetened soy milk"]}]},
+{cat:"main",groups:[
+ {name:"Food safety steps",items:["Wash hands","Refrigerate","Cook thoroughly","Separate raw meat"]},
+ {name:"Common food allergens",items:["Peanuts","Shellfish","Sesame","Wheat"]},
+ {name:"Signs of dehydration",items:["Thirst","Headache","Dark urine","Tiredness"]},
+ {name:"Healthy breakfasts",items:["Porridge","Muesli","Wholegrain toast","Scrambled eggs"]}]},
+{cat:"a",groups:[
+ {name:"Fitness components",items:["Strength","Flexibility","Agility","Endurance"]},
+ {name:"Ball sports",items:["Netball","Soccer","Basketball","Volleyball"]},
+ {name:"Fundamental movement skills",items:["Throw","Catch","Kick","Leap"]},
+ {name:"Warm-up activities",items:["Light jogging","Leg swings","Arm circles","High knees"]}]},
+{cat:"b",groups:[
+ {name:"Sun safety",items:["Shirt","Sunscreen","Hat","Sunglasses"]},
+ {name:"Sleep helpers",items:["Dark room","Routine","No screens","Cool room"]},
+ {name:"Puberty changes",items:["Growth spurt","Body hair","Pimples","Mood swings"]},
+ {name:"Trusted adults",items:["Parent","Teacher","School nurse","Coach"]}]},
+{cat:"mix",groups:[
+ {name:"Good for bones",items:["Calcium","Vitamin D","Weight-bearing exercise","Dairy foods"]},
+ {name:"Good for the heart",items:["Aerobic exercise","Less salt","Not smoking","Healthy fats"]},
+ {name:"Good for the brain",items:["Sleep","Breakfast","Water","Omega-3"]},
+ {name:"Good for the gut",items:["Fibre","Yoghurt","Legumes","Wholegrains"]}]}
+];
+
+// RANK sets: [label, value, display]. Ordering games use these.
+const RANK=[
+{cat:"main",title:"Sugar in a typical drink",low:"Least sugar",high:"Most sugar",note:"1 teaspoon = 4 g of sugar.",items:[
+ ["Tap water (any size)",0,"0 tsp"],["Plain milk, 250 mL",3,"about 3 tsp (natural milk sugar)"],["Apple juice, 250 mL",6,"about 6 tsp"],["Energy drink, 250 mL",7,"about 7 tsp"],["Sports drink, 600 mL",9,"about 9 tsp"],["Cola, 375 mL can",10,"about 10 tsp"]]},
+{cat:"main",title:"Water content of foods",low:"Least water",high:"Most water",items:[
+ ["Almonds",4,"about 4%"],["Bread",36,"about 36%"],["Banana",75,"about 75%"],["Apple",86,"about 86%"],["Watermelon",92,"about 92%"],["Cucumber",96,"about 96%"]]},
+{cat:"main",title:"Food's path through the digestive system",low:"First",high:"Last",items:[
+ ["Mouth",1,"1st"],["Oesophagus",2,"2nd"],["Stomach",3,"3rd"],["Small intestine",4,"4th"],["Large intestine",5,"5th"],["Rectum",6,"6th"]]},
+{cat:"main",title:"Daily serves for a 12–13-year-old girl",low:"Fewest serves",high:"Most serves",note:"Boys this age need slightly more vegetables and grains.",items:[
+ ["Fruit",2,"2 serves"],["Lean meats & alternatives",2.5,"2½ serves"],["Milk, yoghurt, cheese & alternatives",3.5,"3½ serves"],["Vegetables & legumes",5,"5 serves"]]},
+{cat:"a",title:"How intense is it?",low:"Least energy used",high:"Most energy used",note:"Measured in METs: 1 MET is the energy you use resting.",items:[
+ ["Sleeping",0.9,"about 1 MET"],["Sitting and watching TV",1.3,"about 1.3 METs"],["Walking at a gentle pace",2.8,"about 3 METs"],["Riding a bike at a moderate pace",6.8,"about 7 METs"],["Running at 8 km/h",8.3,"about 8 METs"],["Fast rope skipping",12.3,"about 12 METs"]]},
+{cat:"a",title:"A safe training session",low:"First",high:"Last",items:[
+ ["Light jog to raise your pulse",1],["Dynamic stretches like leg swings",2],["Skill drills for your sport",3],["Main game or workout",4],["Easy jog or walk to cool down",5],["Static stretches held 15–30 seconds",6]]},
+{cat:"b",title:"DRSABCD first aid steps",low:"First",high:"Last",items:[
+ ["Check for Danger",1],["Check for a Response",2],["Send for help (call 000)",3],["Open the Airway",4],["Check Breathing",5],["Start CPR",6],["Attach a Defibrillator",7]]},
+{cat:"b",title:"Washing your hands properly",low:"First",high:"Last",items:[
+ ["Wet your hands",1],["Apply soap",2],["Scrub for 20 seconds",3],["Rinse",4],["Dry with a clean towel",5]]}
+];
+
+const WHO=[
+{cat:"main",a:["Calcium"],clues:["About 99% of me in your body is stored in bones and teeth.","Your body can't make me, so I must come from food.","Vitamin D helps your body absorb me.","Teens need lots of me while bones grow fast.","I'm the mineral in milk, cheese and yoghurt."]},
+{cat:"main",a:["Iron"],clues:["Without enough of me you may feel tired and pale.","Vitamin C helps your body absorb me from plant foods.","I'm found in red meat, legumes and leafy greens.","I'm part of haemoglobin in red blood cells.","I'm the mineral that helps blood carry oxygen."]},
+{cat:"main",a:["Protein","proteins"],clues:["I'm made of building blocks called amino acids.","Athletes often eat me after training.","I'm found in meat, fish, eggs, tofu and legumes.","Your hair, nails and muscles are made from me.","I'm the nutrient that builds and repairs body tissue."]},
+{cat:"main",a:["Fibre","fiber","dietary fibre"],clues:["Your body can't fully digest me.","Gut bacteria love to feed on me.","I help you feel full for longer.","I'm in wholegrains, fruit, vegetables and legumes.","I keep your digestion regular."]},
+{cat:"main",a:["Vitamin C","ascorbic acid"],clues:["Sailors once got scurvy without me.","Your body can't store much of me, so you need me daily.","I help your body absorb iron.","Oranges, kiwi fruit and capsicum are full of me.","I'm the vitamin that supports immunity and wound healing."]},
+{cat:"main",a:["Vitamin D"],clues:["Your skin can make me.","I help your body absorb calcium.","Without me, bones can become soft.","Small amounts of sun exposure help you make me.","I'm called the sunshine vitamin."]},
+{cat:"main",a:["Carbohydrates","carbohydrate","carbs"],clues:["Your body breaks me down into glucose.","Your brain uses me as its main fuel.","Wholegrain types of me release energy slowly.","Bread, pasta, rice and potatoes are full of me.","I'm the body's main source of energy."]},
+{cat:"main",a:["Water"],clues:["I make up about 60% of your body.","You lose me through sweat and breathing.","Thirst and dark urine are signs you need more of me.","I have no sugar and come straight from the tap.","I'm the best drink choice."]},
+{cat:"main",a:["Australian Guide to Healthy Eating","guide to healthy eating","healthy eating guide","aghe"],clues:["I'm a circle divided into coloured sections.","Discretionary foods sit outside me, in a corner.","A glass of water sits beside me.","I'm based on the Australian Dietary Guidelines.","I show the five food groups in the right proportions."]},
+{cat:"main",a:["Small intestine","small intestines"],clues:["I'm about 6 metres long but folded up tightly.","Tiny finger-like villi line my walls.","The pancreas and liver send juices into me.","Food reaches me straight after the stomach.","I'm where most nutrients are absorbed."]},
+{cat:"main",a:["Stomach"],clues:["My lining renews itself every few days.","I can stretch to hold over a litre.","I make strong hydrochloric acid.","I churn food into a thick liquid called chyme.","Food arrives at me from the oesophagus."]},
+{cat:"a",a:["Heart"],clues:["I beat around 100,000 times a day.","Aerobic exercise makes me stronger.","I have four chambers.","My beat can be felt as your pulse.","I'm the muscle that pumps blood around your body."]},
+{cat:"a",a:["Flexibility"],clues:["Gymnasts and dancers need lots of me.","The sit-and-reach test measures me.","Regular stretching improves me.","I'm about how far your joints can move.","I'm the fitness component about range of motion."]},
+{cat:"b",a:["Sleep"],clues:["Teenagers' body clocks shift later, making me harder to start early.","Screens before bed can delay me.","Growth hormone is released during me.","5–13-year-olds need 9 to 11 hours of me.","I'm what you do in bed every night."]},
+{cat:"b",a:["Puberty"],clues:["I can start anywhere from about age 8 to 14.","Hormones trigger me.","Growth spurts are part of me.","Everyone goes through me at their own pace.","I'm when a child's body changes into an adult's."]},
+{cat:"mix",a:["Endorphins","endorphin"],clues:["I'm a chemical made by your brain.","Exercise releases me.","Laughing can release me too.","I help reduce pain.","I'm the feel-good chemical behind a 'runner's high'."]}
+];
+
+const ODD=[
+{cat:"main",o:["Bread","Rice","Pasta","Cheese"],x:"Cheese",why:"Cheese is in the dairy group. The others are grain foods."},
+{cat:"main",o:["Milk","Yoghurt","Cheese","Butter"],x:"Butter",why:"Butter is mostly fat, so it isn't in the dairy food group. The others are."},
+{cat:"main",o:["Apple","Banana","Mango","Potato"],x:"Potato",why:"Potato is a vegetable. The others are fruit."},
+{cat:"main",o:["Calcium","Iron","Zinc","Vitamin C"],x:"Vitamin C",why:"Vitamin C is a vitamin. The others are minerals."},
+{cat:"main",o:["Tap water","Plain milk","Sparkling water","Soft drink"],x:"Soft drink",why:"Soft drink is a sometimes drink full of sugar. The others are everyday drinks."},
+{cat:"main",o:["Lentils","Chickpeas","Kidney beans","Rice"],x:"Rice",why:"Rice is a grain. The others are legumes."},
+{cat:"main",o:["Oats","Brown rice","Wholemeal bread","White bread"],x:"White bread",why:"White bread is refined. The others are wholegrain, with more fibre."},
+{cat:"main",o:["Mouth","Stomach","Small intestine","Lungs"],x:"Lungs",why:"The lungs are for breathing. The others are part of the digestive system."},
+{cat:"main",o:["Chips","Lollies","Cake","Carrot sticks"],x:"Carrot sticks",why:"Carrot sticks are an everyday food. The others are sometimes foods."},
+{cat:"main",o:["Salmon","Avocado","Olive oil","Lard"],x:"Lard",why:"Lard is high in saturated fat. The others contain healthy unsaturated fats."},
+{cat:"main",o:["Protein","Carbohydrate","Fat","Vitamin D"],x:"Vitamin D",why:"Vitamin D is needed in tiny amounts (a micronutrient). The others are macronutrients that give energy."},
+{cat:"main",o:["Oranges","Kiwi fruit","Capsicum","White rice"],x:"White rice",why:"White rice has almost no vitamin C. The others are rich in it."},
+{cat:"main",o:["Peanuts","Shellfish","Sesame","Carrots"],x:"Carrots",why:"Carrots aren't a common allergen. The others are."},
+{cat:"main",o:["Liver","Pancreas","Gall bladder","Oesophagus"],x:"Oesophagus",why:"Food passes through the oesophagus. The others help digestion, but food never travels through them."},
+{cat:"a",o:["Strength","Speed","Flexibility","Netball"],x:"Netball",why:"Netball is a sport. The others are components of fitness."},
+{cat:"a",o:["Jogging","Cycling","Swimming laps","100 m sprint"],x:"100 m sprint",why:"A sprint is short and all-out (anaerobic). The others are steady aerobic exercise."},
+{cat:"b",o:["Hat","Sunscreen","Sunglasses","Sports drink"],x:"Sports drink",why:"A sports drink doesn't protect you from the sun. The others do."},
+{cat:"b",o:["Wash hands","Refrigerate","Cook thoroughly","Thaw on the bench"],x:"Thaw on the bench",why:"Thawing on the bench lets bacteria grow. Thaw in the fridge instead."},
+{cat:"mix",o:["Fibre","Water","Exercise","Soft drink"],x:"Soft drink",why:"Soft drink doesn't help digestion. Fibre, water and exercise all do."}
+];
+
+const TF=[
+{cat:"main",s:"Carbohydrates are bad for you.",t:false,why:"Myth. They're your body's main energy source. Choose wholegrain types most often."},
+{cat:"main",s:"Fruit canned in natural juice can count as a serve of fruit.",t:true,why:"Fact. Fresh, frozen and canned in natural juice (no added sugar) all count."},
+{cat:"main",s:"Fruit juice is just as good as eating whole fruit.",t:false,why:"Myth. Juice loses most of the fibre and has concentrated sugar. Whole fruit is better."},
+{cat:"main",s:"Frozen vegetables have far fewer nutrients than fresh ones.",t:false,why:"Myth. They're frozen soon after picking, so they keep most of their nutrients."},
+{cat:"main",s:"Eating breakfast can help you concentrate at school.",t:true,why:"Fact. Breakfast refuels your brain after a night without food."},
+{cat:"main",s:"Brown eggs are healthier than white eggs.",t:false,why:"Myth. Shell colour depends on the breed of hen, not nutrition."},
+{cat:"main",s:"Your body needs some fat to stay healthy.",t:true,why:"Fact. Healthy fats help absorb some vitamins and support your brain."},
+{cat:"main",s:"Beans and lentils count as both a vegetable and a protein food.",t:true,why:"Fact. Legumes appear in two food groups in the Australian Guide to Healthy Eating."},
+{cat:"main",s:"Sugar makes children hyperactive.",t:false,why:"Myth. Studies haven't found that sugar causes hyperactivity, though it's still a sometimes food."},
+{cat:"main",s:"Energy drinks are a good choice for teenagers playing sport.",t:false,why:"Myth. They're high in caffeine and sugar and aren't recommended for children."},
+{cat:"main",s:"A food labelled 'natural' is always healthy.",t:false,why:"Myth. 'Natural' isn't a nutrition rating. Check the label for sugar, salt and fibre."},
+{cat:"main",s:"Eating carrots gives you night vision.",t:false,why:"Myth. Vitamin A supports normal eyesight, but carrots won't let you see in the dark. The story came from World War II."},
+{cat:"main",s:"Swallowed chewing gum stays in your stomach for seven years.",t:false,why:"Myth. It passes through your digestive system in a few days."},
+{cat:"main",s:"Most nutrients from food are absorbed in the small intestine.",t:true,why:"Fact. Its villi give it a huge surface area for absorbing nutrients."},
+{cat:"a",s:"You should do long static stretches right before a sprint.",t:false,why:"Myth. Warm up with movement and dynamic stretches first. Save static stretches for after."},
+{cat:"a",s:"Young people should be active for at least 60 minutes a day.",t:true,why:"Fact. That's the Australian guideline for 5–17-year-olds."},
+{cat:"b",s:"Teenagers' body clocks naturally shift later, making it harder to fall asleep early.",t:true,why:"Fact. That's why routines and less screen time at night matter."},
+{cat:"b",s:"You should rinse raw chicken before cooking it.",t:false,why:"Myth. Rinsing splashes bacteria around the kitchen. Cooking it thoroughly kills them."},
+{cat:"b",s:"The 'five-second rule' makes dropped food safe.",t:false,why:"Myth. Bacteria can transfer to food almost instantly."},
+{cat:"mix",s:"Being active and eating well both help your mood.",t:true,why:"Fact. Your body and mind are closely connected."}
+];
+
+const ROUTE=[
+{n:"Mouth",f:"Teeth chew your food and saliva starts breaking down starch. Your bite is ready to swallow."},
+{n:"Oesophagus",f:"Muscles squeeze food down this tube in waves called peristalsis. It works even if you're upside down."},
+{n:"Stomach",f:"Strong acid and churning muscles turn food into a thick liquid called chyme."},
+{n:"Small intestine",f:"About 6 metres long. Most nutrients are absorbed into the blood here through tiny finger-like villi."},
+{n:"Large intestine",f:"Water is absorbed here, and helpful gut bacteria feed on fibre."},
+{n:"Rectum",f:"Journey complete. Waste is stored here until it leaves the body. Fibre and water make this last step easier."}
+];
+const DECOYS=[
+{n:"Lungs",why:"The lungs are for breathing. Food going there would make you choke."},
+{n:"Trachea",why:"The trachea (windpipe) carries air. A flap called the epiglottis stops food going down it."},
+{n:"Heart",why:"The heart pumps blood. Nutrients only reach it later, through the blood."},
+{n:"Kidneys",why:"Kidneys filter blood to make urine. Food doesn't pass through them."},
+{n:"Liver",why:"The liver makes bile and processes nutrients from the blood, but food doesn't travel through it."},
+{n:"Pancreas",why:"The pancreas sends enzymes into the small intestine, but food doesn't pass through it."},
+{n:"Bladder",why:"The bladder stores urine, not food waste."}
+];
+
+const MANDATE=[
+{s:"Your alarm went off late and there's no time for a big breakfast.",c:[
+ {t:"Grab a banana and a glass of milk",e:[15,10,5]},{t:"Skip breakfast",e:[-20,-10,-10]},{t:"Grab a chocolate bar from the cupboard",e:[0,-10,0]}],
+ note:"Breakfast refuels you after a night's sleep. Even something quick from the five food groups helps you concentrate."},
+{s:"It's recess and you're hungry.",c:[
+ {t:"Fruit and a yoghurt",e:[10,15,5]},{t:"A packet of chips",e:[0,-10,0]},{t:"Nothing, you'll wait until lunch",e:[-15,-5,-10]}],
+ note:"Snacks from the five food groups keep your energy steady between meals."},
+{s:"It's 32°C and you've got PE this afternoon.",c:[
+ {t:"Fill your water bottle and sip through the day",e:[15,5,10]},{t:"Buy an energy drink",e:[5,-10,-5]},{t:"Don't drink anything until you get home",e:[-20,0,-15]}],
+ note:"Water is the best drink. Energy drinks aren't recommended for children because of their caffeine and sugar."},
+{s:"What's in your lunchbox today?",c:[
+ {t:"A wholegrain wrap with chicken and salad",e:[15,15,5]},{t:"A white-bread jam sandwich",e:[5,-5,0]},{t:"Swap your lunch for a friend's lollies",e:[-5,-15,5]}],
+ note:"A lunch with several food groups gives longer-lasting energy than sugary food."},
+{s:"You get home from school starving.",c:[
+ {t:"Toast with peanut butter and an apple",e:[10,10,5]},{t:"A big bag of corn chips while gaming",e:[0,-10,-5]},{t:"Wait until dinner and feel grumpy",e:[-10,0,-10]}],
+ note:"An after-school snack with protein and fibre keeps you going until dinner."},
+{s:"You're choosing a drink at the shop. You're not exercising.",c:[
+ {t:"Water",e:[10,5,5]},{t:"A sports drink",e:[0,-5,0]},{t:"A large soft drink",e:[-5,-10,0]}],
+ note:"Sports drinks are designed for long, intense exercise. Otherwise they're just extra sugar."},
+{s:"Dinner time.",c:[
+ {t:"A family stir-fry with vegetables and rice",e:[15,15,10]},{t:"Takeaway for the fifth night this week",e:[0,-10,0]},{t:"Skip dinner to keep gaming",e:[-15,-10,-10]}],
+ note:"Eating a variety of foods, and sharing meals, is good for both body and mood."},
+{s:"You're choosing a breakfast cereal at the supermarket.",c:[
+ {t:"Compare labels and pick one lower in sugar and higher in fibre",e:[5,15,0]},{t:"Pick the one with the cartoon on the box",e:[0,-10,5]},{t:"Pick the one that says 'natural' on the front",e:[0,-5,0]}],
+ note:"Use the 'per 100 g' column to compare foods fairly. Front-of-pack claims can be misleading."},
+{s:"You've got sport training at 6 pm.",c:[
+ {t:"Eat a light meal two to three hours before",e:[15,5,5]},{t:"Train on an empty stomach",e:[-15,0,-5]},{t:"Eat a big greasy meal just before",e:[-10,-5,-5]}],
+ note:"Eating a few hours before exercise gives energy without an upset stomach."},
+{s:"It's late and you're still on your phone.",c:[
+ {t:"Phone away and lights out on time",e:[15,0,15]},{t:"Keep scrolling until midnight",e:[-15,0,-10]},{t:"Grab a midnight snack of lollies",e:[-5,-10,0]}],
+ note:"5–13-year-olds need 9 to 11 hours of sleep. Sleep affects energy, mood and even food choices."}
+];
+
+const SORTS=[
+{cat:"main",title:"Which food group?",bins:["Grains","Dairy & alternatives","Lean meats & alternatives"],cards:[
+ ["Bread",0],["Oats",0],["Rice",0],["Milk",1],["Cheese",1],["Yoghurt",1],["Chicken",2],["Eggs",2],["Tofu",2]]},
+{cat:"main",title:"Everyday or sometimes?",bins:["Everyday","Sometimes"],cards:[
+ ["Apple",0],["Wholemeal bread",0],["Carrot sticks",0],["Plain milk",0],["Lollies",1],["Soft drink",1],["Potato chips",1],["Doughnut",1]]},
+{cat:"main",title:"Which nutrient does this?",bins:["Protein","Calcium","Fibre"],cards:[
+ ["Builds and repairs muscle",0],["Found in meat, eggs and legumes",0],["Made of amino acids",0],
+ ["Builds strong bones",1],["Keeps teeth strong",1],["Found in milk and cheese",1],
+ ["Keeps digestion regular",2],["Helps you feel full",2],["Found in wholegrains and beans",2]]},
+{cat:"main",title:"Vitamin or mineral?",bins:["Vitamin","Mineral"],cards:[
+ ["Vitamin C",0],["Vitamin D",0],["Vitamin A",0],["Folate",0],["Iron",1],["Calcium",1],["Zinc",1],["Iodine",1]]},
+{cat:"a",title:"Aerobic or anaerobic?",bins:["Aerobic (long, steady)","Anaerobic (short, all-out)"],cards:[
+ ["Jogging 5 km",0],["Swimming laps for 30 minutes",0],["Cycling to school",0],["Dancing for an hour",0],
+ ["100 m sprint",1],["Vertical jump",1],["Shot put throw",1],["Sprinting to the ball",1]]},
+{cat:"b",title:"Safe or unsafe food handling?",bins:["Safe","Unsafe"],cards:[
+ ["Washing hands before cooking",0],["Keeping cold food in the fridge",0],["Separate boards for raw meat",0],["Reheating leftovers until steaming",0],
+ ["Leaving chicken on the bench all afternoon",1],["Same knife for raw meat and salad",1],["Eating food past its use-by date",1],["Thawing meat on the bench overnight",1]]}
+];
+
+/* ============ ENGINE ============ */
+const KEY=CONFIG.key;
+let store={days:{},practice:0,big:false};
+try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s&&typeof s==="object")store=Object.assign(store,s)}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}}
+const S={mode:"daily"};
+let keyHandler=null;
+
+function today(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function hashStr(s){let h=1779033703^s.length;for(let i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=h<<13|h>>>19}return h>>>0}
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function rngFor(id){return S.mode==="daily"?mulberry(hashStr(today()+":"+id)):Math.random}
+function pick(pool,n,rng){
+  const copies={};pool.forEach(it=>{(copies[it.cat]=copies[it.cat]||[]).push(it)});
+  const out=[];
+  while(out.length<n){
+    const cats=Object.keys(copies).filter(k=>copies[k].length);if(!cats.length)break;
+    const tot=cats.reduce((s,k)=>s+(CATW[k]||.05),0);let r=rng()*tot,c=cats[cats.length-1];
+    for(const k of cats){r-=CATW[k]||.05;if(r<=0){c=k;break}}
+    const arr=copies[c];out.push(arr.splice(Math.floor(rng()*arr.length),1)[0]);
+  }
+  return out;
+}
+function shuffle(a,rng){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function norm(s){return String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/^the /,"").replace(/[^a-z0-9]/g,"")}
+function lev(a,b){if(Math.abs(a.length-b.length)>2)return 9;const d=Array.from({length:a.length+1},(_,i)=>[i]);for(let j=1;j<=b.length;j++)d[0][j]=j;for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[a.length][b.length]}
+function matches(input,aliases){
+  const g=norm(input);if(!g)return false;
+  for(const al of aliases){const a=norm(al);if(!a)continue;
+    if(g===a||g+"s"===a||g===a+"s"||g+"es"===a)return true;
+    const tol=a.length>=9?2:a.length>=5?1:0;if(tol&&lev(g,a)<=tol)return true;}
+  return false;
+}
+function fmtNum(n){return Number(n).toLocaleString("en-AU",{maximumFractionDigits:2})}
+function fmtYear(y){return y<0?`${fmtNum(-y)} BCE`:`${y} CE`}
+const $=s=>document.querySelector(s);
+const app=document.getElementById("app");
+
+function record(id,score,max,line){
+  if(S.mode==="daily"){const d=today();store.days[d]=store.days[d]||{};store.days[d][id]={score,max,line}}
+  else store.practice=(store.practice||0)+score;
+  save();
+}
+function streak(){let n=0;const d=new Date();if(!store.days[today()])d.setDate(d.getDate()-1);
+  for(;;){const k=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");if(store.days[k]&&Object.keys(store.days[k]).length){n++;d.setDate(d.getDate()-1)}else break}return n}
+
+const ICON={
+dynastle:'<path d="M7 5v22M13 5v22M19 5v22M25 5v22M4 11h24M4 21h24"/>',
+obscure:'<path d="M8 7h16M8 25h16M8 7a3 3 0 0 0 0 6M24 7a3 3 0 0 1 0 6M8 19a3 3 0 0 0 0 6M24 19a3 3 0 0 1 0 6M9 13v6M23 13v6M13 14h6M13 18h4"/>',
+closest:'<circle cx="16" cy="16" r="12"/><rect x="12" y="12" width="8" height="8"/>',
+groups:'<rect x="5" y="5" width="9" height="9" rx="1"/><rect x="18" y="5" width="9" height="9" rx="1"/><rect x="5" y="18" width="9" height="9" rx="1"/><rect x="18" y="18" width="9" height="9" rx="1"/>',
+timeline:'<path d="M3 16h26"/><circle cx="7" cy="16" r="2.5"/><circle cx="16" cy="16" r="2.5"/><circle cx="25" cy="16" r="2.5"/><path d="M7 9v4M16 19v4M25 9v4"/>',
+who:'<rect x="5" y="5" width="22" height="22" rx="2"/><path d="M12.5 12.5a3.5 3.5 0 1 1 5 3.2c-1 .5-1.5 1.2-1.5 2.3v.5"/><path d="M16 22.5v.01"/>',
+odd:'<circle cx="9" cy="9" r="4"/><circle cx="23" cy="9" r="4"/><circle cx="9" cy="23" r="4"/><rect x="19" y="19" width="8" height="8"/>',
+place:'<path d="M3 25h26"/><circle cx="7" cy="25" r="2"/><circle cx="25" cy="25" r="2"/><path d="M16 25v-6"/><circle cx="16" cy="12" r="5"/>',
+silk:'<path d="M4 25c7 0 6-9 12-9s5-9 12-9"/><circle cx="4" cy="25" r="2.2"/><circle cx="16" cy="16" r="2.2"/><circle cx="28" cy="7" r="2.2"/>',
+mandate:'<circle cx="16" cy="16" r="5"/><path d="M16 4v4M16 24v4M4 16h4M24 16h4M7.5 7.5l2.8 2.8M21.7 21.7l2.8 2.8M7.5 24.5l2.8-2.8M21.7 10.3l2.8-2.8"/>',
+sort:'<path d="M4 13h7v13H4zM12.5 13h7v13h-7zM21 13h7v13h-7zM13 4h6v5h-6z"/>',
+myth:'<circle cx="16" cy="16" r="12"/><path d="M16 4a6 6 0 0 1 0 12a6 6 0 0 0 0 12"/><circle cx="16" cy="10" r="1.3"/><circle cx="16" cy="22" r="1.3"/>'
+};
+const GAMES=[
+{id:"dynastle",name:"Dynastle",desc:"Guess the hidden word in six tries",run:runWordle},
+{id:"obscure",name:"Obscure Scholar",desc:"Rarer correct answers score more",run:runObscure},
+{id:"closest",name:"Closest Guess",desc:"Estimate the number or year",run:runFermi},
+{id:"groups",name:"Four Treasures",desc:"Sort 16 items into four groups",run:runConnect},
+{id:"timeline",name:"Timeline",desc:"Put six events in order",run:runTimeline},
+{id:"who",name:"Who Am I?",desc:"Name it from as few clues as you can",run:runWho},
+{id:"odd",name:"Odd One Out",desc:"Spot the item that doesn't belong",run:runOdd},
+{id:"myth",name:"Myth or Fact",desc:"Bust the myths about the past",run:runMyth},
+{id:"place",name:"Place in Time",desc:"Slot an event into the timeline",run:runPlace},
+{id:"silk",name:"Silk Road Journey",desc:"Lead a caravan from Chang'an to Rome",run:runSilk},
+{id:"mandate",name:"Mandate of Heaven",desc:"Rule as a Han emperor and keep power",run:runMandate},
+{id:"sort",name:"Sort the Scrolls",desc:"Sort each card into the right group",run:runSort}
+];
+GAMES.forEach(g=>{const o=CONFIG.games[g.id];if(o)Object.assign(g,o)});Object.assign(ICON,CONFIG.icons||{});
+
+function home(){
+  if(keyHandler){document.removeEventListener("keydown",keyHandler);keyHandler=null}
+  const d=new Date(),day=store.days[today()]||{};
+  const played=Object.keys(day).length,total=Object.values(day).reduce((s,r)=>s+Math.round(100*r.score/r.max),0);
+  app.innerHTML=`
+  <header class="hero">
+    <div class="head">
+      <div><h1>${esc(CONFIG.title)}</h1>
+        <p>${esc(CONFIG.tagline)}</p></div>
+      <div class="seal" aria-label="Today's date"><div><b>${d.getDate()}</b><span>${d.toLocaleDateString("en-AU",{month:"short"})}</span></div></div>
+    </div>
+    <svg class="ink" viewBox="0 0 800 200" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <circle class="sun" cx="585" cy="58" r="28"/>
+      <path class="birds" d="M430 40q6-6 12 0q6-6 12 0M475 58q4-4 8 0q4-4 8 0"/>
+      <path class="mt3" d="M0 140C80 70 140 105 200 55C260 15 300 95 360 75C420 55 470 5 540 45C600 80 650 55 720 35C760 25 790 55 800 65V200H0Z"/>
+      <path class="mt2" d="M0 170C70 120 120 150 180 110C240 75 290 140 360 120C430 100 480 130 560 100C630 75 700 130 800 110V200H0Z"/>
+      <path class="mt1" d="M0 200V182C100 158 160 188 260 172C360 156 420 192 520 177C620 162 700 188 800 172V200Z"/>
+    </svg>
+  </header>
+  <div class="controls">
+    <div class="seg" role="group" aria-label="Mode">
+      <button data-mode="daily" aria-pressed="${S.mode==="daily"}">Daily</button>
+      <button data-mode="practice" aria-pressed="${S.mode==="practice"}">Practice</button>
+    </div>
+    <button class="chip" id="big" aria-pressed="${!!store.big}">Big screen text</button>
+    <span class="stat">${S.mode==="daily"?`${played}/${GAMES.length} played today · Streak ${streak()} day${streak()===1?"":"s"}`:`Practice points: ${fmtNum(store.practice||0)}`}</span>
+  </div>
+  <nav class="cards" aria-label="Games">
+    ${GAMES.map(g=>{const r=S.mode==="daily"&&day[g.id];return `<button class="card" data-g="${g.id}">
+      ${r?`<span class="done">${r.score}/${r.max}</span>`:""}
+      <span class="emblem"><svg viewBox="0 0 32 32" aria-hidden="true">${ICON[g.id]}</svg></span>
+      <h3>${esc(g.name)}</h3><span class="desc">${esc(g.desc)}</span>
+      <span class="go">${r?"See result":"Play"}</span></button>`}).join("")}
+  </nav>
+  <p class="footnote">${S.mode==="daily"?"Daily puzzles are the same for everyone today and reset at midnight. Switch to Practice for unlimited random rounds.":"Practice gives a fresh random round every time."} ${esc(CONFIG.mix)}</p>`;
+  app.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{S.mode=b.dataset.mode;home()});
+  $("#big").onclick=()=>{store.big=!store.big;save();applyBig();home()};
+  app.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>openGame(b.dataset.g));
+  window.scrollTo(0,0);
+}
+function applyBig(){if(store.big)document.documentElement.setAttribute("data-big","");else document.documentElement.removeAttribute("data-big")}
+
+function openGame(id){
+  const g=GAMES.find(x=>x.id===id);
+  const done=S.mode==="daily"&&(store.days[today()]||{})[id];
+  if(done){showResult(g,done.score,done.max,done.line,true);return}
+  g.run(g);
+}
+function shell(g,progress,inner){
+  app.innerHTML=`<div class="gtop"><button class="back" id="back">‹ All games</button><span class="progress">${progress||""}</span></div>
+  <h2 class="gtitle" style="margin-bottom:1rem">${esc(g.name)}</h2>${inner}`;
+  $("#back").onclick=home;
+}
+function tag(cat){return `<span class="tag ${cat}">${CATNAME[cat]}</span>`}
+
+function showResult(g,score,max,line,already){
+  if(keyHandler){document.removeEventListener("keydown",keyHandler);keyHandler=null}
+  if(!already)record(g.id,score,max,line);
+  const share=`${CONFIG.title} ${S.mode==="daily"?today():"(practice)"}\n${line}`;
+  shell(g,"",`<div class="panel">
+    ${already?`<p class="muted" style="margin-top:0">You've already played today's ${esc(g.name)}.</p>`:""}
+    <div class="big-score">${score} / ${max}</div>
+    <p class="share" id="sh">${esc(share)}</p>
+    <div class="row">
+      <button class="btn" id="copy">Copy result</button>
+      <button class="btn ghost" id="again">${S.mode==="daily"?"Practise this game":"Play again"}</button>
+      <button class="btn ghost" id="home2">All games</button>
+    </div><p id="cmsg" class="muted"></p></div>`);
+  $("#copy").onclick=async()=>{try{await navigator.clipboard.writeText(share);$("#cmsg").textContent="Copied."}catch(e){$("#cmsg").textContent="Select the text above to copy it."}};
+  $("#again").onclick=()=>{S.mode="practice";g.run(g)};
+  $("#home2").onclick=home;
+}
+
+/* ---------- Dynastle ---------- */
+function runWordle(g){
+  const rng=rngFor(g.id);const item=pick(WORDS,1,rng)[0];const T=item.w;const L=T.length;
+  const guesses=[];let cur="",over=false,msg="";const keyState={};
+  const rows=["QWERTYUIOP","ASDFGHJKL","+ZXCVBNM-"];
+  function evalG(gs){const r=Array(L).fill("absent"),c={};for(let i=0;i<L;i++){if(gs[i]===T[i])r[i]="correct";else c[T[i]]=(c[T[i]]||0)+1}for(let i=0;i<L;i++){if(r[i]!=="correct"&&c[gs[i]]>0){r[i]="present";c[gs[i]]--}}return r}
+  const rank={absent:1,present:2,correct:3};
+  function draw(){
+    let grid="";for(let r=0;r<6;r++){const gs=guesses[r];let cells="";
+      for(let i=0;i<L;i++){if(gs){cells+=`<div class="tile ${gs.res[i]}">${gs.w[i]}</div>`}else if(r===guesses.length&&!over){const ch=cur[i]||"";cells+=`<div class="tile ${ch?"filled":""}">${ch}</div>`}else cells+=`<div class="tile"></div>`}
+      grid+=`<div class="wrow" style="grid-template-columns:repeat(${L},auto)">${cells}</div>`}
+    shell(g,`${L} letters`,`${tag(item.cat)}<p class="clue"><b>Clue:</b> ${esc(item.clue)}</p>
+      <div class="wgrid" role="grid" aria-label="Guesses">${grid}</div>
+      <p class="clue muted" id="wmsg" aria-live="assertive">${esc(msg)}</p>
+      <div class="kb">${rows.map(r=>`<div class="kbr">${[...r].map(k=>k==="+"?`<button class="key wide" data-k="ENTER">Enter</button>`:k==="-"?`<button class="key wide" data-k="DEL" aria-label="Delete">Del</button>`:`<button class="key ${keyState[k]||""}" data-k="${k}">${k}</button>`).join("")}</div>`).join("")}</div>`);
+    app.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>press(b.dataset.k));
+  }
+  function press(k){
+    if(over)return;
+    if(k==="ENTER"){
+      if(cur.length!==L){msg=`The word has ${L} letters.`;draw();return}
+      const res=evalG(cur);guesses.push({w:cur,res});
+      [...cur].forEach((ch,i)=>{if(!keyState[ch]||rank[res[i]]>rank[keyState[ch]])keyState[ch]=res[i]});
+      const won=cur===T;cur="";msg="";
+      if(won||guesses.length===6){over=true;
+        const grid=guesses.map(x=>x.res.map(r=>r==="correct"?"🟩":r==="present"?"🟨":"⬛").join("")).join("\n");
+        const score=won?7-guesses.length:0;
+        msg=won?`Solved! ${T}.`:`The word was ${T}.`;draw();
+        setTimeout(()=>showResult(g,score,6,`${g.name} ${won?guesses.length:"X"}/6\n${grid}`),1300);return}
+    }else if(k==="DEL"){cur=cur.slice(0,-1)}
+    else if(/^[A-Z]$/.test(k)&&cur.length<L){cur+=k}
+    draw();
+  }
+  keyHandler=e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;const k=e.key;if(k==="Enter"){e.preventDefault();press("ENTER")}else if(k==="Backspace")press("DEL");else if(/^[a-zA-Z]$/.test(k))press(k.toUpperCase())};
+  document.addEventListener("keydown",keyHandler);
+  draw();
+}
+
+/* ---------- Obscure Scholar ---------- */
+function runObscure(g){
+  const rng=rngFor(g.id);const qs=pick(OBSCURE,5,rng);let i=0,total=0,misses=0;const lines=[];
+  function step(){
+    const q=qs[i];misses=0;
+    shell(g,`Prompt ${i+1} of ${qs.length}`,`<div class="panel">${tag(q.cat)}<p class="prompt">${esc(q.q)}</p>
+      <p class="muted" style="margin-top:-.4rem">Common answers score low. Think of something correct that few people would say.</p>
+      <div class="row"><input class="input" id="ans" autocomplete="off" aria-label="Your answer" placeholder="Type one answer"><button class="btn" id="go">Submit</button></div>
+      <div id="fb"></div></div>`);
+    const inp=$("#ans");inp.focus();
+    const submit=()=>{const v=inp.value.trim();if(!v)return;
+      const hit=q.a.find(a=>matches(v,[a[0],...a.slice(2)]));
+      if(!hit){misses++;
+        if(misses<3){$("#fb").innerHTML=`<div class="feedback bad">“${esc(v)}” isn't on our list. Check spelling or try another answer (${3-misses} ${3-misses===1?"try":"tries"} left).</div>`;inp.value="";inp.focus();return}
+        reveal(null,0);return}
+      reveal(hit,hit[1]);};
+    $("#go").onclick=submit;inp.onkeydown=e=>{if(e.key==="Enter")submit()};
+  }
+  function reveal(hit,pts){
+    total+=pts;const q=qs[i];lines.push(pts>=70?"🟥":pts>=40?"🟧":pts>0?"🟨":"⬛");
+    const sorted=q.a.slice().sort((a,b)=>b[1]-a[1]);
+    $("#fb").innerHTML=`<div class="feedback ${pts>=40?"":pts>0?"mid":"bad"}"><b>${hit?`${esc(hit[0])}: ${pts} points`:"No points this time"}</b>
+      <p style="margin:.4rem 0 .2rem">Answers on our list, rarest first:</p>
+      <ul class="list">${sorted.map(a=>`<li class="${hit===a?"you":""}"><span>${esc(a[0])}</span><span class="muted">${a[1]}</span></li>`).join("")}</ul>
+      <div class="row" style="margin-top:.8rem"><button class="btn" id="nx">${i+1<qs.length?"Next prompt":"See result"}</button></div></div>`;
+    $("#go").disabled=true;$("#ans").disabled=true;
+    $("#nx").onclick=()=>{i++;if(i<qs.length)step();else showResult(g,total,qs.length*100,`${g.name} ${total} pts\n${lines.join("")}`)};$("#nx").focus();
+  }
+  step();
+}
+
+/* ---------- Closest Guess ---------- */
+function runFermi(g){
+  const rng=rngFor(g.id);const qs=pick(FERMI,5,rng);let i=0,total=0;const lines=[];
+  function step(){
+    const q=qs[i];let era=-1;
+    shell(g,`Question ${i+1} of ${qs.length}`,`<div class="panel">${tag(q.cat)}<p class="prompt">${esc(q.q)}</p>
+      <div class="row"><input class="input" id="ans" inputmode="decimal" autocomplete="off" aria-label="Your estimate" placeholder="${q.type==="year"?"Year":"Your estimate"}">
+      ${q.type==="year"?`<div class="seg" role="group" aria-label="Era"><button data-era="-1" aria-pressed="true">BCE</button><button data-era="1" aria-pressed="false">CE</button></div>`:`<span class="muted">${esc(q.unit)}</span>`}
+      <button class="btn" id="go">Lock in</button></div><div id="fb"></div></div>`);
+    app.querySelectorAll("[data-era]").forEach(b=>b.onclick=()=>{era=+b.dataset.era;app.querySelectorAll("[data-era]").forEach(x=>x.setAttribute("aria-pressed",x===b))});
+    const inp=$("#ans");inp.focus();
+    const submit=()=>{let v=parseFloat(inp.value.replace(/,/g,""));if(!isFinite(v)){$("#fb").innerHTML=`<div class="feedback bad">Enter a number.</div>`;return}
+      let pts;
+      if(q.type==="year"){v=Math.abs(v)*era;pts=Math.max(0,Math.round(100-Math.abs(v-q.a)/q.scale*100))}
+      else{if(v<=0){$("#fb").innerHTML=`<div class="feedback bad">Enter a number greater than zero.</div>`;return}
+        pts=Math.max(0,Math.round(100*(1-Math.abs(Math.log10(v/q.a))/(q.spread||1))))}
+      total+=pts;lines.push(pts>=90?"🎯":pts>=60?"🟩":pts>=30?"🟨":"⬛");
+      const ans=q.type==="year"?fmtYear(q.a):`${fmtNum(q.a)} ${q.unit}`,you=q.type==="year"?fmtYear(v):`${fmtNum(v)} ${q.unit}`;
+      $("#fb").innerHTML=`<div class="feedback ${pts>=60?"":pts>=30?"mid":"bad"}"><b>${pts} points.</b> You said ${esc(you)}. Answer: ${esc(ans)}.<p style="margin:.4rem 0 0">${esc(q.fact)}</p>
+        <div class="row" style="margin-top:.8rem"><button class="btn" id="nx">${i+1<qs.length?"Next question":"See result"}</button></div></div>`;
+      $("#go").disabled=true;inp.disabled=true;
+      $("#nx").onclick=()=>{i++;if(i<qs.length)step();else showResult(g,total,qs.length*100,`${g.name} ${total} pts\n${lines.join("")}`)};$("#nx").focus();};
+    $("#go").onclick=submit;inp.onkeydown=e=>{if(e.key==="Enter")submit()};
+  }
+  step();
+}
+
+/* ---------- Four Treasures (Connections) ---------- */
+function runConnect(g){
+  const rng=rngFor(g.id);const P=pick(CONNECT,1,rng)[0];
+  const groups=P.groups.map((x,lv)=>({...x,lv}));
+  let tiles=shuffle(groups.flatMap(x=>x.items),rng),sel=[],solved=[],mistakes=0,msg="",foundCount=0;const hist=[];
+  const sq=["🟩","🟫","🟦","🟥"];
+  function draw(){
+    shell(g,`Mistakes left <span class="dots">${[0,1,2,3].map(k=>`<i class="${k<mistakes?"used":""}"></i>`).join("")}</span>`,
+     `${tag(P.cat)}<p class="muted" style="margin-top:0">Find four groups of four. Tap four items, then check.</p>
+     ${solved.map(s=>`<div class="solved lv${s.lv}"><b>${esc(s.name)}</b>${esc(s.items.join(", "))}</div>`).join("")}
+     <div class="cgrid">${tiles.map(t=>`<button class="ctile" data-t="${esc(t)}" aria-pressed="${sel.includes(t)}">${esc(t)}</button>`).join("")}</div>
+     <p class="muted" style="min-height:1.5em;text-align:center" aria-live="assertive">${esc(msg)}</p>
+     <div class="row" style="justify-content:center"><button class="btn ghost" id="shuf">Shuffle</button><button class="btn ghost" id="clr">Deselect</button><button class="btn" id="chk" ${sel.length===4?"":"disabled"}>Check</button></div>`);
+    app.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{const t=b.dataset.t;if(sel.includes(t))sel=sel.filter(x=>x!==t);else if(sel.length<4)sel.push(t);msg="";draw()});
+    $("#shuf").onclick=()=>{tiles=shuffle(tiles,Math.random);draw()};
+    $("#clr").onclick=()=>{sel=[];draw()};
+    $("#chk").onclick=check;
+  }
+  function check(){
+    hist.push(sel.map(t=>sq[groups.find(x=>x.items.includes(t)).lv]).join(""));
+    const grp=groups.find(x=>sel.every(t=>x.items.includes(t)));
+    if(grp){solved.push(grp);tiles=tiles.filter(t=>!grp.items.includes(t));sel=[];msg="";
+      if(solved.length===4){draw();return finish(true)}}
+    else{mistakes++;const best=Math.max(...groups.map(x=>sel.filter(t=>x.items.includes(t)).length));
+      msg=best===3?"One away.":"Not a group.";
+      if(mistakes>=4){foundCount=solved.length;solved=solved.concat(groups.filter(x=>!solved.includes(x)));tiles=[];sel=[];msg="Out of mistakes. Here are the groups.";draw();return finish(false)}}
+    draw();
+  }
+  function finish(won){
+    const score=won?8-mistakes:foundCount;
+    setTimeout(()=>showResult(g,score,8,`${g.name} ${won?"solved":"unsolved"}, ${mistakes} mistake${mistakes===1?"":"s"}\n${hist.join("\n")}`),1800);
+  }
+  draw();
+}
+
+/* ---------- Rank It (ordering) ---------- */
+const mkItem=it=>({t:it[0],y:it[1],d:it[2]||("Step "+it[1])});
+function runTimeline(g){
+  const rng=rngFor(g.id);const set=pick(RANK,1,rng)[0];
+  const evs=shuffle(set.items,rng).slice(0,6).map(mkItem);
+  let order=shuffle(evs,rng);const correct=evs.slice().sort((a,b)=>a.y-b.y);let attempt=0,marks=null,done=false,score=0;const lines=[];
+  function draw(){
+    shell(g,`Check ${Math.min(attempt+1,3)} of 3`,`${tag(set.cat)}<h3 style="margin:.2rem 0 .3rem">${esc(set.title)}</h3>
+      <p class="muted" style="margin-top:0">${esc(set.low)} at the top, ${esc(set.high.toLowerCase())} at the bottom. You get three checks.${set.note?" "+esc(set.note):""}</p>
+      <ol class="tl">${order.map((e,k)=>`<li class="${marks?(marks[k]?"ok":"no"):""}">
+        <div class="arrows"><button data-up="${k}" aria-label="Move up" ${k===0||done?"disabled":""}>▲</button><button data-dn="${k}" aria-label="Move down" ${k===order.length-1||done?"disabled":""}>▼</button></div>
+        <span class="txt">${esc(e.t)}</span>${done?`<span class="yr">${esc(e.d)}</span>`:""}</li>`).join("")}</ol>
+      <div class="row" style="margin-top:1rem">${done?`<button class="btn" id="fin">See result</button>`:`<button class="btn" id="chk">Check order</button>`}</div>`);
+    app.querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>{const k=+b.dataset.up;[order[k-1],order[k]]=[order[k],order[k-1]];marks=null;draw()});
+    app.querySelectorAll("[data-dn]").forEach(b=>b.onclick=()=>{const k=+b.dataset.dn;[order[k+1],order[k]]=[order[k],order[k+1]];marks=null;draw()});
+    if($("#chk"))$("#chk").onclick=check;if($("#fin"))$("#fin").onclick=()=>showResult(g,score,100,`${g.name} ${score} pts\n${lines.join("\n")}`);
+  }
+  function check(){
+    attempt++;marks=order.map((e,k)=>e.y===correct[k].y);const n=marks.filter(Boolean).length;lines.push(marks.map(m=>m?"🟩":"⬛").join(""));
+    if(n===order.length){score=[100,70,40][attempt-1];done=true}
+    else if(attempt>=3){score=Math.round(n/order.length*60);done=true;order=correct.slice();marks=order.map(()=>true)}
+    draw();
+  }
+  draw();
+}
+
+/* ---------- Who Am I? ---------- */
+function runWho(g){
+  const rng=rngFor(g.id);const qs=pick(WHO,3,rng);let i=0,total=0;const lines=[];
+  function step(){
+    const q=qs[i];let shown=1,over=false,fb="";
+    function draw(){
+      shell(g,`Mystery ${i+1} of ${qs.length}`,`<div class="panel">${tag(q.cat)}<p class="prompt">Who or what am I?</p>
+        <ol class="cluelist">${q.clues.slice(0,shown).map(c=>`<li>${esc(c)}</li>`).join("")}</ol>
+        ${over?"":`<div class="row"><input class="input" id="ans" autocomplete="off" aria-label="Your guess" placeholder="Your guess"><button class="btn" id="go">Guess</button>
+        <button class="btn ghost" id="more">${shown<5?`Next clue (${100-shown*20} pts left)`:"Give up"}</button></div>`}
+        <div>${fb}</div></div>`);
+      if(over){$("#nx").onclick=()=>{i++;if(i<qs.length)step();else showResult(g,total,qs.length*100,`${g.name} ${total} pts\n${lines.join("")}`)};$("#nx").focus();return}
+      const inp=$("#ans");inp.focus();
+      const submit=()=>{const v=inp.value.trim();if(!v)return;
+        if(matches(v,q.a)){const pts=120-shown*20;total+=pts;lines.push(["","🥇","🥈","🥉","🟩","🟨"][shown]);over=true;
+          fb=`<div class="feedback"><b>${esc(q.a[0])}! ${pts} points.</b><ol class="cluelist" style="margin:.5rem 0 0">${q.clues.slice(shown).map(c=>`<li>${esc(c)}</li>`).join("")}</ol><div class="row" style="margin-top:.8rem"><button class="btn" id="nx">${i+1<qs.length?"Next mystery":"See result"}</button></div></div>`;draw()}
+        else{fb=`<div class="feedback bad">Not “${esc(v)}”.${shown<5?" Try again or reveal another clue.":" Try again or give up."}</div>`;draw()}};
+      $("#go").onclick=submit;inp.onkeydown=e=>{if(e.key==="Enter")submit()};
+      $("#more").onclick=()=>{if(shown<5){shown++;fb="";draw()}else{over=true;lines.push("⬛");fb=`<div class="feedback bad"><b>It was ${esc(q.a[0])}.</b><div class="row" style="margin-top:.8rem"><button class="btn" id="nx">${i+1<qs.length?"Next mystery":"See result"}</button></div></div>`;draw()}};
+    }
+    draw();
+  }
+  step();
+}
+
+/* ---------- Odd One Out & Myth or Fact ---------- */
+function runChoice(g,items,n,render){
+  const rng=rngFor(g.id);const qs=pick(items,n,rng);let i=0,total=0;const lines=[];
+  function step(){
+    const q=qs[i];const {prompt,opts,isRight,why}=render(q,rng);
+    shell(g,`${i+1} of ${qs.length}`,`<div class="panel">${tag(q.cat)}<p class="prompt">${esc(prompt)}</p>
+      <div class="choices">${opts.map((o,k)=>`<button class="choice" data-k="${k}">${esc(o)}</button>`).join("")}</div><div id="fb"></div></div>`);
+    app.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{
+      const k=+b.dataset.k,ok=isRight(opts[k]);if(ok)total+=10;lines.push(ok?"🟩":"⬛");
+      app.querySelectorAll("[data-k]").forEach(x=>{x.disabled=true;if(isRight(opts[+x.dataset.k]))x.classList.add("right");else if(x===b)x.classList.add("wrong")});
+      $("#fb").innerHTML=`<div class="feedback ${ok?"":"bad"}"><b>${ok?"Correct.":"Not quite."}</b> ${esc(why)}<div class="row" style="margin-top:.8rem"><button class="btn" id="nx">${i+1<qs.length?"Next":"See result"}</button></div></div>`;
+      $("#nx").onclick=()=>{i++;if(i<qs.length)step();else showResult(g,total,qs.length*10,`${g.name} ${total/10}/${qs.length}\n${lines.join("")}`)};$("#nx").focus();});
+  }
+  step();
+}
+function runOdd(g){runChoice(g,ODD,8,(q,rng)=>({prompt:"Which one doesn't belong?",opts:shuffle(q.o,rng),isRight:o=>o===q.x,why:q.why}))}
+function runMyth(g){runChoice(g,TF,10,q=>({prompt:q.s,opts:["Fact","Myth"],isRight:o=>(o==="Fact")===q.t,why:q.why}))}
+
+/* ---------- Where Does It Fit? ---------- */
+function runPlace(g){
+  const rng=rngFor(g.id);const R=5;let i=0,total=0;const lines=[];const used=new Set();
+  const rounds=[];for(let r=0;r<R;r++){const set=pick(RANK,1,rng)[0];const avail=set.items.filter(it=>!used.has(it));const pool=avail.length?avail:set.items;
+    const t=pool[Math.floor(rng()*pool.length)];used.add(t);
+    const refs=shuffle(set.items.filter(x=>x[1]!==t[1]),rng).slice(0,4).sort((a,b)=>a[1]-b[1]).map(mkItem);rounds.push({set,t:mkItem(t),refs})}
+  function step(){
+    const {set,t,refs}=rounds[i];const right=refs.filter(r=>r.y<t.y).length;let chosen=null;
+    function draw(){
+      let html="";
+      for(let k=0;k<=refs.length;k++){
+        if(chosen===null)html+=`<li class="gap"><button data-gap="${k}">Place it here</button></li>`;
+        else{
+          if(k===right)html+=`<li class="placed ${chosen===right?"ok":"no"}"><span class="txt"><b>${esc(t.t)}</b></span><span class="yr">${esc(t.d)}</span></li>`;
+          if(k===chosen&&chosen!==right)html+=`<li class="gap miss"><span>Your guess</span></li>`;
+        }
+        if(k<refs.length)html+=`<li class="ref"><span class="txt">${esc(refs[k].t)}</span><span class="yr">${esc(refs[k].d)}</span></li>`;
+      }
+      shell(g,`Round ${i+1} of ${R}`,`<div class="panel">${tag(set.cat)}<p class="muted" style="margin:0">${esc(set.title)}. Where does this fit?</p>
+        <p class="prompt">${esc(t.t)}</p>
+        <p class="muted" style="margin-top:-.4rem">${esc(set.low)} at the top, ${esc(set.high.toLowerCase())} at the bottom.</p>
+        <ol class="ptl">${html}</ol><div id="fb"></div></div>`);
+      app.querySelectorAll("[data-gap]").forEach(b=>b.onclick=()=>{
+        chosen=+b.dataset.gap;const off=Math.abs(chosen-right);const pts=off===0?20:off===1?10:0;total+=pts;lines.push(off===0?"🟩":off===1?"🟨":"⬛");draw();
+        $("#fb").innerHTML=`<div class="feedback ${off===0?"":off===1?"mid":"bad"}"><b>${off===0?"Exactly right. 20 points.":off===1?"One spot away. 10 points.":"Not quite. 0 points."}</b> ${esc(t.t)}: ${esc(t.d)}.${set.note?" "+esc(set.note):""}
+          <div class="row" style="margin-top:.8rem"><button class="btn" id="nx">${i+1<R?"Next round":"See result"}</button></div></div>`;
+        $("#nx").onclick=()=>{i++;if(i<R)step();else showResult(g,total,R*20,`${g.name} ${total} pts\n${lines.join("")}`)};$("#nx").focus();});
+    }
+    draw();
+  }
+  step();
+}
+
+/* ---------- Silk Road Journey ---------- */
+function runSilk(g){
+  const rng=rngFor(g.id);let k=1,total=0,tries=0;const lines=[];const max=(ROUTE.length-1)*10;
+  let opts=null,wrong=[],fb="";
+  function newOpts(){opts=shuffle([ROUTE[k],...shuffle(DECOYS,rng).slice(0,2)],rng);wrong=[];tries=0}
+  function draw(){
+    const done=k>=ROUTE.length;
+    shell(g,done?"Arrived":`${CONFIG.journey.step} ${k} of ${ROUTE.length-1}`,`<div class="panel">${tag(CONFIG.journey.cat)}
+      <ol class="route" aria-hidden="true">${ROUTE.map((r,j)=>`<li class="${j<k?"been":j===k?"next":""}"><span class="dot"></span></li>`).join("")}</ol>
+      <p class="trail">${ROUTE.slice(0,Math.min(k,ROUTE.length)).map(r=>esc(r.n)).join(" › ")}${k<ROUTE.length?" › ?":""}</p>
+      <p class="muted" style="margin:.2rem 0 0">${esc(CONFIG.journey.here)} <b>${esc(ROUTE[Math.min(k,ROUTE.length)-1].n)}</b>. ${esc(ROUTE[Math.min(k,ROUTE.length)-1].f)}</p>
+      ${done?"":`<p class="prompt" style="margin-top:1rem">${esc(CONFIG.journey.ask)}</p>
+      <div class="choices one">${opts.map((o,j)=>`<button class="choice ${wrong.includes(o)?"wrong":""}" data-o="${j}" ${wrong.includes(o)?"disabled":""}>${esc(o.n)}</button>`).join("")}</div>`}
+      <div>${fb}</div>${done?`<div class="row" style="margin-top:1rem"><button class="btn" id="fin">See result</button></div>`:""}</div>`);
+    app.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{
+      const o=opts[+b.dataset.o];
+      if(o===ROUTE[k]){const pts=tries===0?10:tries===1?5:0;total+=pts;lines.push(tries===0?"🐫":tries===1?"🟨":"⬛");fb=`<div class="feedback"><b>On to ${esc(o.n)}. +${pts}</b></div>`;k++;if(k<ROUTE.length)newOpts();draw()}
+      else{tries++;wrong.push(o);fb=`<div class="feedback bad">${esc(o.why)}</div>`;
+        if(tries>=2){lines.push("⬛");fb+=`<div class="feedback mid">The next stop was ${esc(ROUTE[k].n)}.</div>`;k++;if(k<ROUTE.length)newOpts()}
+        draw()}});
+    if($("#fin"))$("#fin").onclick=()=>showResult(g,total,max,`${g.name} ${total}/${max}\n${lines.join("")}`);
+  }
+  newOpts();draw();
+}
+
+/* ---------- Mandate of Heaven ---------- */
+function runMandate(g){
+  const rng=rngFor(g.id);const evs=shuffle(MANDATE,rng).slice(0,6).map(ev=>({...ev,c:shuffle(ev.c,rng)}));let i=0;const m={h:60,p:60,t:60};const lines=[];let fb="",answered=false,fallen=false;
+  const clamp=v=>Math.max(0,Math.min(100,v));
+  function meter(label,v){return `<div class="meter"><span>${label}</span><div class="bar"><i style="width:${v}%;background:${v<25?"var(--cinnabar)":v<50?"var(--bronze)":"var(--jade)"}"></i></div><b>${v}</b></div>`}
+  function draw(){
+    const ev=evs[i];
+    shell(g,`${CONFIG.sim.unit} ${i+1} of ${evs.length}`,`<div class="panel">${tag(CONFIG.sim.cat)}
+      <p class="muted" style="margin-top:0">${esc(CONFIG.sim.intro)}</p>
+      <div class="meters">${meter(CONFIG.sim.meters[0],m.h)}${meter(CONFIG.sim.meters[1],m.p)}${meter(CONFIG.sim.meters[2],m.t)}</div>
+      <p class="prompt" style="margin-top:1rem">${esc(ev.s)}</p>
+      ${answered?"":`<div class="choices one">${ev.c.map((c,j)=>`<button class="choice" data-c="${j}">${esc(c.t)}</button>`).join("")}</div>`}
+      <div>${fb}</div></div>`);
+    app.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{
+      const c=ev.c[+b.dataset.c];const [dh,dp,dt]=c.e;m.h=clamp(m.h+dh);m.p=clamp(m.p+dp);m.t=clamp(m.t+dt);
+      const net=dh+dp+dt;lines.push(net>0?"🟩":net>-10?"🟨":"🟥");
+      const sg=v=>(v>0?"+":"")+v;
+      fallen=m.h===0||m.p===0||m.t===0;answered=true;
+      fb=`<div class="feedback ${net>0?"":net>-10?"mid":"bad"}"><b>You chose: ${esc(c.t)}.</b> ${CONFIG.sim.meters[0]} ${sg(dh)}, ${CONFIG.sim.meters[1].toLowerCase()} ${sg(dp)}, ${CONFIG.sim.meters[2].toLowerCase()} ${sg(dt)}.
+        <p style="margin:.4rem 0 0">${esc(ev.note)}</p>
+        ${fallen?`<p style="margin:.4rem 0 0"><b>${esc(CONFIG.sim.fail)}</b></p>`:""}
+        <div class="row" style="margin-top:.8rem"><button class="btn" id="nx">${!fallen&&i+1<evs.length?"Next":"See result"}</button></div></div>`;
+      draw();
+      $("#nx").onclick=()=>{if(!fallen&&i+1<evs.length){i++;answered=false;fb="";draw()}else{const score=fallen?0:Math.round((m.h+m.p+m.t)/3);
+        showResult(g,score,100,`${g.name} ${fallen?CONFIG.sim.lost:score+"/100"}\n${lines.join("")}`)}};$("#nx").focus();});
+  }
+  draw();
+}
+
+/* ---------- Sort the Scrolls ---------- */
+function runSort(g){
+  const rng=rngFor(g.id);const set=pick(SORTS,1,rng)[0];const cards=shuffle(set.cards,rng);let i=0,score=0;const placed=set.bins.map(()=>[]);const lines=[];let fb="";
+  function draw(){
+    const done=i>=cards.length;const card=cards[i];
+    shell(g,done?"Sorted":`Card ${i+1} of ${cards.length}`,`${tag(set.cat)}<h3 style="margin:.2rem 0 .8rem">${esc(set.title)}</h3>
+      ${done?"":`<div class="sortcard">${esc(card[0])}</div><p class="muted" style="text-align:center;margin:.4rem 0 .8rem">Tap the group it belongs to.</p>`}
+      <div class="bins" style="grid-template-columns:repeat(${set.bins.length},minmax(0,1fr))">${set.bins.map((b,j)=>`<div class="bin">
+        <button class="btn ${done?"ghost":""}" data-b="${j}" ${done?"disabled":""}>${esc(b)}</button>
+        <ul>${placed[j].map(p=>`<li class="${p.ok?"ok":"no"}">${esc(p.text)}${p.ok?"":` <span class="muted">(${esc(set.bins[p.right])})</span>`}</li>`).join("")}</ul></div>`).join("")}</div>
+      <div>${fb}</div>${done?`<div class="row" style="margin-top:1rem"><button class="btn" id="fin">See result</button></div>`:""}`);
+    app.querySelectorAll("[data-b]").forEach(b=>b.onclick=()=>{
+      const j=+b.dataset.b,ok=j===card[1];if(ok)score++;lines.push(ok?"🟩":"⬛");placed[j].push({text:card[0],ok,right:card[1]});
+      fb=ok?"":`<div class="feedback bad">“${esc(card[0])}” belongs in ${esc(set.bins[card[1]])}.</div>`;i++;draw()});
+    if($("#fin"))$("#fin").onclick=()=>showResult(g,score,cards.length,`${g.name}: ${set.title} ${score}/${cards.length}\n${lines.join("")}`);
+  }
+  draw();
+}
+
+applyBig();home();
+</script>
+</body>
+</html>
